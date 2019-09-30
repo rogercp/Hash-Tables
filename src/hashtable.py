@@ -69,7 +69,12 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        i = self._hash_mod(key)
+
+        if not self.storage[index]:
+            return print("index not found")
+        else:
+            del self.storage[index]
 
 
     def retrieve(self, key):
@@ -90,7 +95,7 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        
 
 
 
