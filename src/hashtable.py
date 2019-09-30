@@ -51,7 +51,13 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        i = self._hash_mod(key)
+
+        if not self.storage[index]:
+            self.resize()
+
+        self.storage[index] = LinkedPair(key,value)
+
 
 
 
