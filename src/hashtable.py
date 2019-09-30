@@ -89,7 +89,7 @@ class HashTable:
         if not self.storage[index]:
             return None
         else:
-            return self.storage[index][value]
+            return self.storage[index].value
 
 
     def resize(self):
