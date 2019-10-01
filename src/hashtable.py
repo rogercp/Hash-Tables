@@ -15,6 +15,7 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
+        self.load = 0
 
 
     def _hash(self, key):
@@ -54,6 +55,8 @@ class HashTable:
         i = self._hash_mod(key)
 
         if not self.storage[index]:
+            self.storage[index] = LinkedPair(key, value)
+            self.load += 1
             self.resize()
 
         self.storage[index] = LinkedPair(key,value)
