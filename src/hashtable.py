@@ -81,10 +81,23 @@ class HashTable:
         '''
         i = self._hash_mod(key)
 
-        if not self.storage[index]:
-            return print("index not found")
-        else:
-            del self.storage[index]
+        current = self.storage[i]
+
+        if current.key == key:
+            if current.key is None:
+                self.storage[i] = None
+            else:
+                self.storage[i] = current.next
+            return current.value
+        
+        while current.next and current.next.key != key:
+            current = current.next
+        
+        removed = current.next
+        current.next = removed.next
+        self.load -= 1
+        self.resize()
+        return removed.value
 
 
     def retrieve(self, key):
