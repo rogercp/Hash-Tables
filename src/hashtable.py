@@ -109,10 +109,16 @@ class HashTable:
         Fill this in.
         '''
         i = self._hash_mod(key)
-        if not self.storage[index]:
+        lookup = self.storage[i]
+
+        if lookup is None:
             return None
-        else:
-            return self.storage[index].value
+        
+        while lookup.key != key:
+            if lookup.next is None:
+                return None
+            lookup = lookup.next
+        return lookup.value
 
 
     def resize(self):
