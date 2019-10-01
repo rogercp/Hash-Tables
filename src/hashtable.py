@@ -54,13 +54,20 @@ class HashTable:
         '''
         i = self._hash_mod(key)
 
-        if not self.storage[index]:
+        if self.storage[index] is None:
             self.storage[index] = LinkedPair(key, value)
             self.load += 1
             self.resize()
-
-        self.storage[index] = LinkedPair(key,value)
-
+        else:
+            find = self.storage[index]
+            while find.next:
+                if find.key == key:
+                    break
+                find = find.next
+            if find.key == key:
+                find.value = value
+            else:
+                self.storage[index] = LinkedPair(key,value)
 
 
 
