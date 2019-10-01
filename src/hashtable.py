@@ -15,6 +15,7 @@ class HashTable:
     def __init__(self, capacity):
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
+        self.load = 0
 
 
     def _hash(self, key):
@@ -51,7 +52,22 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        i = self._hash_mod(key)
+
+        if self.storage[i] is None:
+            self.storage[i] = LinkedPair(key, value)
+            self.load += 1
+            self.resize()
+        else:
+            find = self.storage[i]
+            while find.next:
+                if find.key == key:
+                    break
+                find = find.next
+            if find.key == key:
+                find.value = value
+            else:
+                self.storage[i] = LinkedPair(key,value)
 
 
 
@@ -63,7 +79,25 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        i = self._hash_mod(key)
+
+        current = self.storage[i]
+
+        if current.key == key:
+            if current.key is None:
+                self.storage[i] = None
+            else:
+                self.storage[i] = current.next
+            return current.value
+        
+        while current.next and current.next.key != key:
+            current = current.next
+        
+        removed = current.next
+        current.next = removed.next
+        self.load -= 1
+        self.resize()
+        return removed.value
 
 
     def retrieve(self, key):
@@ -74,7 +108,17 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        i = self._hash_mod(key)
+        lookup = self.storage[i]
+
+        if lookup is None:
+            return None
+        
+        while lookup.key != key:
+            if lookup.next is None:
+                return None
+            lookup = lookup.next
+        return lookup.value
 
 
     def resize(self):
@@ -84,7 +128,12 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        self.capacity = self.capacity * 2
+        new_allocation = [None] * self.capacity
+        for i in range(len(self.storage)):
+            new_allocation[i] = self.storage[i]
+        
+        self.storage = new_allocation
 
 
 
